@@ -6,6 +6,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public Vector3 initialVelocity = new Vector3(0f, 0f, 5f);
     public Vector3 initialAngularVelocity = new Vector3(0f, 0f, 0f);
     public Vector3 initialPosition = new Vector3(-0.5f, 2.5f, -8f);
+    public float FM = 1f; // Example force magnitude
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,8 +21,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
             Debug.Log("Rigidbody component successfully retrieved.");
         }
         rb.useGravity = false; // Disable gravity for the Rigidbody
-        
-        
+
+
     }
 
     private void OnCollisionEnter(Collision other)
@@ -39,13 +40,15 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Batsman: y=" + (rb.position.y -0.5f));
+        Debug.Log("Batsman: y=" + (rb.position.y - 0.5f));
+        Debug.Log("Velocity: " + rb.linearVelocity + ", " + (rb.linearVelocity.magnitude)* 3.6f);
 
     }
 
-        private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         Debug.Log("Stumps: y=" + (rb.position.y - 0.5f));
+        Debug.Log("Velocity: " + rb.linearVelocity + ", " + (rb.linearVelocity.magnitude)* 3.6f);
 
     }
 
@@ -62,6 +65,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
                 rb.angularVelocity = initialAngularVelocity;
                 rb.rotation = Quaternion.Euler(0f, -90f, 0f);
                 rb.useGravity = false;
+                
+
             }
 
         }
@@ -72,10 +77,20 @@ public class NewMonoBehaviourScript : MonoBehaviour
             {
                 rb.useGravity = true;
                 rb.linearVelocity = initialVelocity;
+                Debug.Log("Velocity_i " + (rb.linearVelocity.magnitude)* 3.6f);
             }
+        }
+
+        if (rb.linearVelocity.z > 30f)
+        {
+            rb.AddForce(Vector3.right * (30f / (rb.linearVelocity.z * rb.linearVelocity.z)) * FM * 0.1f * 1f);
 
         }
 
-        
+        else if (rb.linearVelocity.z < 30f)
+        {
+            rb.AddForce(Vector3.right * rb.linearVelocity.z / 30f * FM * 0.1f * 1f);
+
+        }
     }
 }
