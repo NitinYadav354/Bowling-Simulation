@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Pitch
+  - Keeper
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - keeper
   - Water
   - UI
   - 

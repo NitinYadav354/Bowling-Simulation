@@ -17,16 +17,23 @@ public class Camera_Switch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            mainCamera.enabled = !mainCamera.enabled;
-            secondaryCamera.enabled = !secondaryCamera.enabled;
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Bat_Cam.enabled = !Bat_Cam.enabled;
-            mainCamera.enabled = !mainCamera.enabled;
+            mainCamera.enabled = true;
             secondaryCamera.enabled = false;
+            Bat_Cam.enabled = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            mainCamera.enabled = false;
+            secondaryCamera.enabled = true;
+            Bat_Cam.enabled = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            mainCamera.enabled = false;
+            secondaryCamera.enabled = false;
+            Bat_Cam.enabled = true;
         }
         
     }
