@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
@@ -7,13 +8,15 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public Vector3 initialVelocity = new Vector3(0f, 0f, 5f);
     public Vector3 initialAngularVelocity = new Vector3(0f, 0f, 0f);
     public Vector3 initialPosition = new Vector3(-0.5f, 2.5f, -8f);
-    public float SwingForce = 1f;
     float releaseTime;
     float reachTime;
     float pitchEnter;
     float pitchExit;
     public float spin = 5f;
     float initialDrag;
+    public Slider SwingSlider;
+    float SwingForce;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -92,6 +95,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -103,8 +107,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
                 rb.rotation = Quaternion.Euler(0f, -90f, 0f);
                 rb.useGravity = false;
                 trail.enabled = false;
-                
-
+                SwingForce = 0;
             }
 
         }
@@ -120,20 +123,16 @@ public class NewMonoBehaviourScript : MonoBehaviour
                 rb.angularVelocity = new Vector3(0f, 0f, 1f);
                 trail.Clear();
                 trail.enabled = true;
+                SwingForce = SwingSlider.value;
+
 
             }
         }
 
-        if (rb.linearVelocity.z > 30f)
+        if (rb.linearVelocity.z > 0f && rb.position.y > 0.6f)
         {
-            rb.AddForce(Vector3.right * (30f / (rb.linearVelocity.z * rb.linearVelocity.z)) * SwingForce * 0.1f);
-
-        }
-
-        else if (rb.linearVelocity.z < 30f)
-        {
-            rb.AddForce(Vector3.right * (rb.linearVelocity.z / 30f) * SwingForce * 0.1f);
-
+            float swing = (SwingForce - 0.01f * (rb.linearVelocity.z - 30f) * (rb.linearVelocity.z - 30f)) ;
+            rb.AddForce(Vector3.right * (swing));
         }
     }
 }
